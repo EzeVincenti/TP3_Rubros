@@ -1,0 +1,91 @@
+﻿@model IEnumerable<WebApplicationNetCore.Models.Subrubro>
+
+@{
+    ViewData["Title"] = "SubRubros";
+}
+
+<h1>Subrubros  
+
+@*- BOTÓN QUE LLAMA AL MODAL - ---------------------------------------------------------------------------------------------------------------*@
+
+
+</h1>
+<button type="button" onclick="AbrirModal()" class="btn btn-light m-1" data-toggle="modal" data-target="#modalAbrir">
+  Nuevo Subrubro 
+</button>
+
+@*- TABLA - ----------------------------------------------------------------------------------------------------------------------------------*@
+
+<table class="table table-boardered">
+    <thead class="table" style="color:White; background-color:#3F72AF">
+        <tr>
+            <th>
+               Descripción
+            </th>
+             <th>
+               Rubro
+            </th>
+            <th class="text-center">Opciones</th>
+        </tr>
+    </thead>
+    <tbody id="tbody-subrubros">
+
+
+    </tbody>
+</table>
+
+
+@*- MODAL - --------------------------------------------------------------------------------------------------------------*@
+
+<div class="modal" id="Subrubros" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="color:white; background-color: #769FCD;">
+        <h5 class="modal-title" id="Titulo"></h5>
+        <button type="button" class="close" onclick="VaciarFormulario()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="color:black; background-color: #F7FBFC;">
+        <form>
+
+         <input type="hidden" id="SubRubroID" value="0"/>
+         <input type="hidden" id="SubRubroEliminado" value=false/>
+         <div class="form-grup">
+         <label >Descripción del Subrubro.</label>          
+        <input required id="SubRubroNombre" type="text" class="form-control p-3 bg-white rounded" autocomplete="off" placeholder="Descripción" aria-label="Username" aria-describedby="basic-addon1"  />
+    
+
+        <p id="Error-SubRubroNombre" class="text-danger" style="font-size:small"></p> 
+         </div>
+          <div class="form-grup">
+         <label >Rubro:</label>
+
+         @*- DROP - ----------------------------------------------------------------------------------------------*@
+
+         @Html.DropDownList("RubrosID", null, htmlAttributes:new {@class = "form-control"})
+         </div>
+
+        </form>
+        
+      </div>
+        
+      <div class="modal-footer"  style="color:white; background-color: #B9D7EA;">
+        <button type="button" class="btn btn-secondary m-1" onclick="VaciarFormulario()" data-dismiss="modal"><i class="bi bi-x-square" style="font-size: 1.2rem; color: white;"></i></button>
+        <button type="button" onclick ="GuardarSubRubro()" class="btn btn-success"><i class="bi bi-save" style="font-size: 1.2rem; color: white;"></i></button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+@*- LLAMADA AL JS - ---------------------------------------------------------------------------------------------------------------------------*@
+
+@section Scripts {
+<script src="~/js/SubRubro-01.js"></script>
+<script>
+window.onload = CompletarTablaSubRubros();
+</script>
+}

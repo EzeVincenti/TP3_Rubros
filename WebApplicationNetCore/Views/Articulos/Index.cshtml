@@ -1,0 +1,118 @@
+﻿@model IEnumerable<WebApplicationNetCore.Models.Articulo>
+
+@{
+    ViewData["Title"] = "Artículo";
+}
+
+<h1>Articulos
+
+@*- BOTÓN QUE LLAMA AL MODAL - ---------------------------------------------------------------------------------------------------------------*@
+
+</h1>
+<button type="button" onclick="AbrirModal()" class="btn btn-light m-1" data-toggle="modal" data-target="#modalAbrir">
+  Nuevo Artículo 
+</button>
+
+
+@*- TABLA - ----------------------------------------------------------------------------------------------------------------------------------*@
+
+<table class="table table-boardered">
+    <thead class="table" style="color:White; background-color:#3F72AF">
+       
+        <tr>
+            <th></th>
+            <th>Descripción</th>
+             <th>Actualización</th>
+              <th>Costo</th>
+              <th>Ganancia</th>
+              <th>Venta</th>
+              <th>Subrubro</th>
+              <th>Rubro</th>
+             
+            <th class="text-center">Opciones</th>
+        </tr>
+    </thead>
+    <tbody id="tbody-articulos">
+
+
+    </tbody>
+</table>
+
+
+@*- MODAL - --------------------------------------------------------------------------------------------------------------*@
+
+<div class="modal" id="Articulos" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="color:white; background-color: #769FCD;">
+        <h5 class="modal-title" id="Titulo"></h5>
+        <button type="button" class="close" onclick="VaciarFormulario()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="color:black; background-color: #F7FBFC;">
+        <form>
+         <input type="hidden" id="ArticuloID" value="0"/>
+          <input type="hidden" id="ArticuloEliminado" value=false/>
+         <div class="form-grup">
+              @* - DESCRIPCIÓN - *@
+         <label >Descripción del artículo.</label>        
+           <input required id="ArticuloNombre" type="text" class="form-control p-3 bg-white rounded" autocomplete="off" placeholder="Descripción" aria-label="Username" aria-describedby="basic-addon1"  />
+           <p id="Error-ArticuloNombre" class="text-danger" style="font-size:small"></p> 
+         </div>
+              @* - INGRESOS NUMÉRICOS - ----------------------------------------------------------------*@
+         <div class="row">
+         <div class="form-group col-lg-4">
+            <label class="control-label">Precio Costo:</label>
+            <div class="input-group-append">
+            <span class="input-group-text">$</span>
+            <input type="tel" class="form-control" value="0" maxlength="9" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"  style="text-transform:uppercase" autocomplete="off" required onKeyUp="CalcularImportes(1)" onKeyDown="CalcularImportes(1)" id="PrecioCosto">
+        </div>
+        </div>
+         <div class="form-group col-lg-4">
+            <label class="control-label">Porc. Ganancia:</label>
+            <div class="input-group-append">
+            <span class="input-group-text">%</span>
+            <input type="tel" class="form-control" value="0" maxlength="9" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"  style="text-transform:uppercase" autocomplete="off" required onKeyUp="CalcularImportes(2)" onKeyDown="CalcularImportes(2)" id="PorcentajeGanancia">
+         </div>
+         </div>
+         <div class="form-group col-lg-4">
+            <label class="control-label">Precio Venta:</label>
+            <div class="input-group-append">
+            <span class="input-group-text">$</span>
+            <input type="tel" class="form-control" value="0" maxlength="9" onKeypress="if (event.keyCode < 45 || event.keyCode > 57) event.returnValue = false;"  style="text-transform:uppercase" autocomplete="off" required onKeyUp="CalcularImportes(3)" onKeyDown="CalcularImportes(3)" id="PrecioVenta">
+         </div>
+         </div>
+         </div>
+         @*- DROP (COMBOS RUBROS Y SUBRUBROS) - --------------------------------------------------------*@
+         <div class="row">   
+         <div class="form-grup col-lg-6">
+            <label class="control-label">Rubro:</label>
+            @Html.DropDownList("RubroID", null, htmlAttributes:new {@class = "form-control"})
+            </div>
+            
+            <div class="form-grup col-lg-6">
+            <label class="control-label">Subrubro:</label> 
+            @Html.DropDownList("SubRubroID", null, htmlAttributes:new {@class = "form-control"})
+         </div>
+         </div>
+        </form>
+       </div>
+      <div class="modal-footer" style="color:white; background-color: #B9D7EA;">
+        <button type="button" class="btn btn-secondary" onclick="VaciarFormulario()" data-dismiss="modal"><i class="bi bi-x-square" style="font-size: 1.2rem; color: white;"></i></button>
+        <button type="button" onclick ="GuardarArticulo()" class="btn btn-success"><i class="bi bi-save" style="font-size: 1.2rem; color: white;"></i></button>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@*- LLAMADA AL JS - ---------------------------------------------------------------------------------------------------------------------------*@
+
+@section Scripts {
+<script src="~/js/Articulo-01.js"></script>
+<script>
+window.onload = CompletarTablaArticulos();
+</script>
+}
